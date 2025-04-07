@@ -11,11 +11,11 @@ const IconComponent = data_chat_gpt.icon;
 const TextComponent= data_chat_gpt.text;
 const labelComponent= data_chat_gpt.label;
 
- const Modal_components= () =>{
+ const Modal_components= ({id}) =>{
 
   return (
    <Nodecomponents IconComponent={IconComponent} TextComponent={TextComponent} labelComponent={labelComponent} >
-     <Modal_inner></Modal_inner>
+     <Modal_inner id={id}></Modal_inner>
    </Nodecomponents>
    
   )

@@ -1,7 +1,7 @@
 
 
 import { LangChainAdapter } from 'ai';
-
+import { NextResponse } from 'next/server';
 import Graph from './Graph'
 
 
@@ -9,20 +9,19 @@ import Graph from './Graph'
 
 
 export async function POST(request) {
-  const { messages }= await request.json();
- //console.log(messages,'?메세지지')
+  const { input }= await request.json();
 
-  const eventStream = await Graph.streamEvents(
+
+  const eventStream = await Graph.invoke(
     {
-      messages
-    },
-    { streamMode: "messages",
+      messages:[{
+        role:"user",
+        content:input
+    }]
+    },{
       configurable: { thread_id: '1' },
-      version: "v2"
     }
   );
 
-
-
-  return LangChainAdapter.toDataStreamResponse(eventStream);
+  return  NextResponse.json(eventStream); 
 }

@@ -6,9 +6,10 @@ export const userSlice = createSlice({
     name: "Node",
     initialState: {
         nodes:[{
-            id: 'db1',
+            id: '1',
             type: 'Node',
             position: { x: 250, y: 25 },
+            children:[]
         },
     
       ],
@@ -23,34 +24,22 @@ export const userSlice = createSlice({
           // 부모노드가 시작하는곳 + width 의 길이를 주어줌 그거에 20만 더해서 간다고 생각하면되고 그거를 position 으로 줌줌 
 
           
+            const { data,nodetype,id,position } = action.payload
 
-       
-
-            const { data,nodetype,id,position } =    action.payload
-
-        
             const newNode = {
               id: id.toString(),
               type: nodetype,
               data: data,
               position: {
-                x:position+20,
-                y:25
+                x:position[0],
+                y:position[1]
               } ,
-            };    
-            //처음에 부모노드가 시작하는부분을 줌 그리고 
+              children:[]
+            };   
 
-
-
-            //const newEdge = {
-            //  id: data.step,
-            //  source: data.id,
-            //  target: data.id,
-            //};
-      
+            
             state.nodes = [...state.nodes,newNode]; 
-           // state.edges = [...state.edges, newEdge]; 
-          
+         
           }
     },
 });

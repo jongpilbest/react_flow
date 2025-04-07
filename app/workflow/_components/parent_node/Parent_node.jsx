@@ -5,11 +5,11 @@ import {data_start_point}from '../../../../lib/Data/data'
 const [IconComponent ,TextComponent ,labelComponent] =
  [data_start_point.icon,data_start_point.text,data_start_point.label]
 
-export default function Parent_node({id}) {
+export default function Parent_node() {
 
   return (
     <Nodecomponents IconComponent={IconComponent} TextComponent={TextComponent}  labelComponent={labelComponent}>
-    <NodeInput id={id}></NodeInput>
+    <NodeInput ></NodeInput>
     </Nodecomponents>
   )
 }

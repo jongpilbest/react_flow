@@ -28,6 +28,10 @@ export default function FlowEditor() {
   const [nodes, setNodes] = useState(reduxNodes || []);
   const [edges, setEdges] = useState(initialEdges);
 
+  useEffect(()=>{
+   setNodes(reduxNodes)
+  },[reduxNodes])
+
 
   // ✅ `useCallback`에서 불필요한 의존성 제거하여 onNodesChange 최적화
   const onNodesChange = useCallback((changes) => {

@@ -38,7 +38,6 @@ function getLastUserMessage(state: typeof StateAnnotation.State) {
 
 function LastMessageContent(state: typeof StateAnnotation.State) {
   const lastMessage = state.messages.at(-1);
-  console.log(state,'?저기요')
   if (!lastMessage) return "";
 
   let content = "";
@@ -125,9 +124,12 @@ const clarifier = async (state: typeof StateAnnotation.State) => {
  //  messages: [...state.messages, { role: "assistant", content: msg }],
  //};
   const answer=" 죄송합니다. 더 많은 정보를 주시겠어요? 이해가 부족합니다. "
-  const newMessage = new AIMessage({ content: answer });
+  const newMessage = new AIMessage({ content: `{
+    "questionType": "AMBIGUOUS",
+    "message": ${[answer]}
+  }` });
   return {
-    messages: newMessage,
+    messages: newMessage
   };
 };
 
@@ -136,14 +138,31 @@ const clarifier = async (state: typeof StateAnnotation.State) => {
 
 const generateSQL = async (state: typeof StateAnnotation.State) => {
 
+  const userPrompt = `
+  Return a valid Json object like this format Only this turn :
+  {
+    "questionType": "ANSWERABLE",
+    "message": [
+      "<Your SQL query here>",
+      "<Short natural language explanation>"
+    ]
+  }
+  `;
   const result = await model.invoke([
-    { role: "system", content: "You are a SQL generator. Only make a sql query " },
-    ...state.messages
+    { role: "system", content: "You are a SQL generator.  make a sql query and short natural query  " },
+    ...state.messages,
+    {
+      role: "user",
+      content: userPrompt
+    }
 
-  ]);
+  ], {
+    response_format: { type: "json_object" }
+    
+  });
 
   return {
-    sql: result.content,
+    messages:result
   };
 };
 
@@ -153,7 +172,11 @@ const generateSQL = async (state: typeof StateAnnotation.State) => {
 // 5. CannotAnswer node
 const cannotAnswer = async (state: typeof StateAnnotation.State) => {
   const msg = "죄송합니다. 해당 질문에 대한 정보를 가지고 있지 않습니다.";
-  const newMessage = new AIMessage({ content: msg });
+
+  const newMessage = new AIMessage({ content: `{
+    "questionType": "UNANSWERABLE",
+    "message": ${[msg]}
+  }` });
   return {
     messages: newMessage
   };
@@ -162,12 +185,25 @@ const cannotAnswer = async (state: typeof StateAnnotation.State) => {
 // 6. RespondPolitely node
 const respondPolitely = async (state: typeof StateAnnotation.State) => {
   // improper 그냥 떠드는거 였음 그에 해당하는 답변은 새로 만드는게 날듯
-
+  const userPrompt = `
+  Return a valid Json object like this format Only this turn :
+  {
+    "questionType": "IMPROPER",
+    "message": 
+      ["<Chat answer>"]
+  }
+  `;
   const result = await model.invoke([
-    { role: "system", content: "상대방 대답에 어울리는 대답을 간단하게 제공해줘줘 " },
-    ...state.messages
-  ]);
-
+    { role: "system", content: "상대방 대답에 어울리는 대답을 간단하게 제공해줘 " },
+    ...state.messages,
+    {
+      role: "user",
+      content: userPrompt
+    }
+  ],{
+    response_format: { type: "json_object" }
+  });
+ 
   return {
     messages:result
   };

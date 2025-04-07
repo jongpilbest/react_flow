@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="flex flex-row w-full h-screen">
         <Header></Header>
         {children}
-        <ChatLayout></ChatLayout>
+      
       </div>
     </QueryClientProvider>
   );
