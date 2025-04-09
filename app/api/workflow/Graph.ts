@@ -144,12 +144,12 @@ const generateSQL = async (state: typeof StateAnnotation.State) => {
     "questionType": "ANSWERABLE",
     "message": [
       "<Your SQL query here>",
-      "<Short natural language explanation>"
+      "<간단한 자연어 질의의>"
     ]
   }
   `;
   const result = await model.invoke([
-    { role: "system", content: "You are a SQL generator.  make a sql query and short natural query  " },
+    { role: "system", content: "당신은 SQL 생성기입니다. SQL 쿼리와 간단한 자연어 질의를 만들어주세요. " },
     ...state.messages,
     {
       role: "user",

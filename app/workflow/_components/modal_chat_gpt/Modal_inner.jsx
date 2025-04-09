@@ -11,6 +11,7 @@ import { change_open } from "@/app/redux/Database";
 import{Loader } from 'lucide-react'
 
 
+
 export default function ModalInner({id}) {
   const [result, setResult] = useState([]);
   const reduxNodes = useSelector((state) => state.node.nodes);
@@ -81,8 +82,8 @@ export default function ModalInner({id}) {
       //api 호출 하느거 
       usepending((el)=>!el);
       let response=await modal_struction(reduxNodes,newNode )
-
-      dispatch(addChildNode({data:JSON.parse(response)}))
+     
+      dispatch(addChildNode({data:JSON.parse(response), newSql:newNode}))
 
 
       usepending((el)=>!el);
