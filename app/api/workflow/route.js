@@ -1,12 +1,11 @@
 
 
-import { LangChainAdapter } from 'ai';
+
 import { NextResponse } from 'next/server';
 import Graph from './Graph'
 
 
 // 이건뭐임?
-
 
 export async function POST(request) {
   const { input }= await request.json();

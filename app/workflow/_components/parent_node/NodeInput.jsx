@@ -12,14 +12,14 @@ import { useNodeId } from '@xyflow/react';
   const dispatch = useDispatch();
   const user = useSelector((state) => state.db.open); 
   const nodeId = useNodeId();
-
-
+  console.log('?? 어디가 느린건지..')
+  
 
   
   return (
     <div className='flex justify-start relative p-3 bg-white w-full'
     >
-     <CSVUploader  />
+     <CSVUploader id={nodeId} />
      {
       user &&
       <div className='absolute -right-10
@@ -39,7 +39,7 @@ import { useNodeId } from '@xyflow/react';
       }
       }
 
-     className="absolute right-[-30px] z-40 top-1/2 transform
+     className="absolute right-[-35px] z-40 top-1/2 transform
      rounded-xl
      -translate-y-1/2
      flex items-center justify-center

@@ -68,7 +68,7 @@ export async function fetchSQLSolution (user,user2,userText) {
           "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          model: "gpt-4",
+          model: "gpt-3.5-turbo",
           messages: [{ role: "system", content: "당신은 SQL 전문가입니다." }, { role: "user", content: prompt }],
           temperature: 0.5,
         }),

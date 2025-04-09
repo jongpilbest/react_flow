@@ -4,7 +4,7 @@ import React, { useState,useEffect } from 'react'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { useSelector, useDispatch } from 'react-redux';
-
+import { addChildNode } from '@/app/redux/Node_Store';
 import {modal_struction} from './modal_structure'
 import { change_open } from "@/app/redux/Database";
 
@@ -48,25 +48,50 @@ export default function ModalInner({id}) {
   
     //부모 노드에 해당하는아이디를 가져온다음 넣어야됨  우선은 아이디를 하드 코딩으로 넣음
     // 여기서 json 형태인 string 으로 받아왓으니 parse 을 이용해야된다. 
+    const last_number_tree=Object.keys(reduxNodes).length+1;
+   
+    //  let chat = {
+    //    sql:messages[0],
+    //    description:messages[1],
+    //    parent_id:id,
+    //    child_id:(parseInt(id)+1).toString(),
+    //    
+    //  };
 
+      const newNode={
+        [last_number_tree]: {
+          id: last_number_tree.toString(),
+          name:'',
+          children: [],
+          data:[messages[0], messages[1]],
+          type:'Child'
+        },
+       }
 
-      let chat = {
-        sql:messages[0],
-        description:messages[1],
-        parent_id:id,
-        child_id:(parseInt(id)+1).toString(),
-        
-      };
+    //  3: {
+    //    id: '3',
+    //    name: '',
+    //    type: 'Child',
+    //    children: [],
+    //    siblings: [],
+    //    spouses: [],
+    //    data: ['sql~', '고용일자 오름차순 + 연봉순 내림차순해줘 +  group by 으로 연봉을 묶어줘']
+    //  }
 
       //api 호출 하느거 
-     // const response=modal_struction(reduxNodes, )
+      usepending((el)=>!el);
+      let response=await modal_struction(reduxNodes,newNode )
 
+      dispatch(addChildNode({data:JSON.parse(response)}))
+
+
+      usepending((el)=>!el);
        
-  
+   
      // dispatch(addChildNode(chat));
       //노드를 추가하기 
 
-    dispatch(change_open()); // UI 갱신
+    //dispatch(change_open()); // UI 갱신
   };
   
   /// html 
@@ -116,6 +141,7 @@ z-50 bg-white">
       <p className='break-words'>{ isUser==true?e_message:e_message.message[0] }</p>
       {
         e_message.questionType =='ANSWERABLE' && <Button  
+        disabled={pending}
         onClick={()=>handleSubmit_2(e_message.message)}
         className='bg-pink-400 hover:bg-blue-700
         p-3 h-6 text-sm

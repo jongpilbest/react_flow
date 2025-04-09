@@ -11,7 +11,7 @@ import { Annotation, MessagesAnnotation ,StateGraph , MemorySaver } from "@langc
 import { ChatOpenAI } from "@langchain/openai";
 const model = new ChatOpenAI({
   temperature: 0,
-  modelName: "gpt-3.5-turbo",
+  modelName: "gpt-4o",
 })
 
 // Define State Schema
