@@ -5,7 +5,7 @@ export default function Nodecard({children}) {
  // onClick={() => setIsSelected(!isSelected)}
   return (
     <div
-      className={`rounded-sm relative cursor-pointer bg-background    border-separate min-w-[420px] text-sm
+      className={`rounded-sm relative cursor-pointer bg-background height-[200px] border-separate w-[420px] text-sm
         gap-1 flex flex-col `}
        // ✅ 클릭 시 상태 변경
     >

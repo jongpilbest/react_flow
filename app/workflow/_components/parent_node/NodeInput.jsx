@@ -24,7 +24,7 @@ import { useNodeId } from '@xyflow/react';
       user &&
       <div className='absolute -right-10
       translate-x-full
-       top-1/2 transform -translate-y-1/2'>
+       top-1/2 transform '>
         
             <Modal_components id={nodeId} >
             </Modal_components>
@@ -35,8 +35,6 @@ import { useNodeId } from '@xyflow/react';
 
      <button 
       onClick={(e) => {
-        e.stopPropagation(); 
-        console.log('선택이 되니')
           dispatch(change_open())
       }
       }
@@ -52,9 +50,10 @@ import { useNodeId } from '@xyflow/react';
      
 
     <Handle
-    type="target"
-    className='hidden'
-    position={Position.Right}
+  className="!w-3 !h-3 !bg-gray-400"
+    type="source"
+    id="bottom"
+    position={Position.Bottom}
         >
     </Handle>
     </div>

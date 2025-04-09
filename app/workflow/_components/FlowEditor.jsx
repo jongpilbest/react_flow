@@ -1,58 +1,78 @@
 "use client";
 
-import React, { useState, useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   ReactFlow,
-  applyNodeChanges,
-  applyEdgeChanges,
   Controls,
   Background,
   BackgroundVariant,
+  ConnectionLineType,
+  addEdge,
+  useNodesState,
+  useEdgesState
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useSelector } from "react-redux";
 import Parents_node from "./parent_node/Parent_node";
 import Child_nodes from "./child_node/Child_nodes";
 import ASked_node from "./asked_chatbot/Asked_chatbot";
+import { treeRootId } from '../../redux/Intial_node';
+import { layoutElements } from '../../redux/layout-element';
+import CustomNode_ex from './parent_node/CustomNode_ex';
 
-const initialEdges = [];
 
 const nodeTypes = {
   Node: Parents_node,
   Child: Child_nodes,
   Chat: ASked_node,
+  custom:CustomNode_ex
 };
 
 export default function FlowEditor() {
-  const reduxNodes = useSelector((state) => state.node.nodes);
-  const [nodes, setNodes] = useState(reduxNodes || []);
-  const [edges, setEdges] = useState(initialEdges);
+  const reduxNodes = useSelector((state) => state.node.nodes); // 실제 트리 형식의 node 데이터
+  //const reduxEdges = useSelector((state) => state.node.edges); // 필요하다면 edge 데이터도 관리
 
-  useEffect(()=>{
-   setNodes(reduxNodes)
-  },[reduxNodes])
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
+  const onConnect = useCallback(
+    (params) =>
+      setEdges((eds) =>
+        addEdge(
+          { ...params, type: ConnectionLineType.SmoothStep, animated: true },
+          eds
+        )
+      ),
+    []
+  );
 
-  // ✅ `useCallback`에서 불필요한 의존성 제거하여 onNodesChange 최적화
-  const onNodesChange = useCallback((changes) => {
-    setNodes((nds) => applyNodeChanges(changes, nds));
-  }, []);
+  // ✅ Redux 상태가 바뀔 때마다 position 포함한 nodes 재계산
+  useEffect(() => {
+    if (!reduxNodes || Object.keys(reduxNodes).length === 0) return;
 
-  const onEdgesChange = useCallback((changes) => {
-    setEdges((eds) => applyEdgeChanges(changes, eds));
-  }, []);
+    const { nodes: layoutedNodes, edges: layoutedEdges } = layoutElements(
+      reduxNodes,
+      treeRootId,
+      'TB'
+    );
+    console.log(layoutedNodes,layoutedEdges,'확인부탁요')
+    setNodes(layoutedNodes);
+    setEdges(layoutedEdges); // 필요하면 같이 업데이트
+  }, [reduxNodes, setNodes, setEdges]);
 
   return (
     <main className="h-full w-full bg-slate-100">
       <ReactFlow
-        nodeTypes={nodeTypes}
         nodes={nodes}
         edges={edges}
-        onEdgesChange={onEdgesChange}
         onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        nodeTypes={nodeTypes}
+        connectionLineType={ConnectionLineType.SmoothStep}
       >
         <Controls position="top-left" />
-        <Background  variant={BackgroundVariant.Dots} gap={20} />
+        <Background variant={BackgroundVariant.Dots} gap={20} />
       </ReactFlow>
     </main>
   );

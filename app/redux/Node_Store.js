@@ -1,45 +1,40 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 
-
+import {initialTree} from './Intial_node'
 export const userSlice = createSlice({
     name: "Node",
     initialState: {
-        nodes:[{
-            id: '1',
-            type: 'Node',
-            position: { x: 250, y: 25 },
-            children:[]
-        },
-    
-      ],
-        
-        edges:{}
+        nodes:initialTree,
+        edges:[]
     },
 
     reducers: {
         addChildNode: (state, action) => {
-          //어쩌피 map 은 여기 밑에서 작동하니까 부모 노드의 시작 포지션을 먼저 주고 증가하는식으로 
-     
-          // 부모노드가 시작하는곳 + width 의 길이를 주어줌 그거에 20만 더해서 간다고 생각하면되고 그거를 position 으로 줌줌 
+  
+         //부모 노드의 아이디를 받아와야한다. 
+         //action.id 형식으로 받아오자
+        
+          const parent_id= action.payload.parent_id;
+          // parent_id 는 string 형식이다. 따라서 parseint 으로 바꾸고 다시 string으로 
+          const children_id=action.payload.child_id;
+        
 
-          
-            const { data,nodetype,id,position } = action.payload
-
-            const newNode = {
-              id: id.toString(),
-              type: nodetype,
-              data: data,
-              position: {
-                x:position[0],
-                y:position[1]
-              } ,
-              children:[]
-            };   
-
+           //inital Tree parent 수정하고 자식으로 넣으면 될까?
+           const newTree = JSON.parse(JSON.stringify(initialTree));
+           newTree[parent_id].children.push(children_id);
+           const newNode={
+            [children_id]: {
+              id: children_id,
+              isChildren: true,
+              data:[action.payload.sql, action.payload.description],
+              type:'Child'
+            },
+           }
+    
             
-            state.nodes = [...state.nodes,newNode]; 
-         
+            state.nodes = {...newTree,...newNode}; 
+
           }
     },
 });

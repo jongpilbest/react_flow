@@ -6,9 +6,12 @@ const [IconComponent ,TextComponent ,labelComponent] =
  [data_child.icon,data_child.text,data_child.label]
  
 export default function Child_nodes({data}) {
+  
+  
+
   return (
    <Nodecomponents IconComponent={IconComponent} TextComponent={TextComponent} labelComponent={labelComponent}>
-    <Child_inner data={data} >
+    <Child_inner data={data}  sql={data.data[0]} description={data.data[1]}>
     </Child_inner>
    </Nodecomponents>
   )

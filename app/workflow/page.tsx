@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 export default function page() {
   return (
     <Provider store={Store}>
+      
       <Editor></Editor>
       </Provider>
      

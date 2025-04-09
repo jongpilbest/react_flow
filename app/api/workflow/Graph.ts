@@ -11,7 +11,7 @@ import { Annotation, MessagesAnnotation ,StateGraph , MemorySaver } from "@langc
 import { ChatOpenAI } from "@langchain/openai";
 const model = new ChatOpenAI({
   temperature: 0,
-  modelName: "gpt-4o",
+  modelName: "gpt-3.5-turbo",
 })
 
 // Define State Schema
@@ -126,7 +126,7 @@ const clarifier = async (state: typeof StateAnnotation.State) => {
   const answer=" 죄송합니다. 더 많은 정보를 주시겠어요? 이해가 부족합니다. "
   const newMessage = new AIMessage({ content: `{
     "questionType": "AMBIGUOUS",
-    "message": ${[answer]}
+    "message": ${ JSON.stringify([answer])}
   }` });
   return {
     messages: newMessage
@@ -175,7 +175,7 @@ const cannotAnswer = async (state: typeof StateAnnotation.State) => {
 
   const newMessage = new AIMessage({ content: `{
     "questionType": "UNANSWERABLE",
-    "message": ${[msg]}
+    "message": ${ JSON.stringify([msg])}
   }` });
   return {
     messages: newMessage
