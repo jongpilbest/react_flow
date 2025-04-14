@@ -4,8 +4,8 @@ import { useState, useRef } from "react";
 import React from "react";
 import Papa from "papaparse";
 import { useDispatch, useSelector } from "react-redux";
-import DataTable from '../../../utils/DataTable_form '
-import { store_db } from "@/app/redux/Database";
+import DataTable_form from '@/app/utils/DataTable_form '
+
 
 function CSVUploader({ id }) {
   const dispatch = useDispatch();

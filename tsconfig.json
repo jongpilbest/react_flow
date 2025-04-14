@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/workflow/_components/FlowEditor.jsx", "lib/workflow/task/CreateFlowNode.js", "app/api/workflow/route.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/workflow/_components/FlowEditor.jsx", "lib/workflow/task/CreateFlowNode.js", "app/workflow/_components/modal_chat_gpt/server.js"],
   "exclude": ["node_modules"]
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import Nodecomponents from '../nodes/Nodecomponents'
 import Child_inner from './Child_inner'
-import {data_child}from '../../../../lib/Data/data'
+import {data_child}from '../../../lib/Data/data'
 const [IconComponent ,TextComponent ,labelComponent] =
  [data_child.icon,data_child.text,data_child.label]
  

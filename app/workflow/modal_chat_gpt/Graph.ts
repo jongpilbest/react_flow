@@ -1,55 +1,25 @@
-// LangGraph-compatible Text-to-SQL Chatbot (updated using LangGraph v0.2 and TogetherAI-compatible flow)
+
+"use server";
 import { z } from "zod";
 import { AIMessage } from "@langchain/core/messages"
-import { Annotation, MessagesAnnotation ,StateGraph, InMemoryStore ,MemorySaver ,LangGraphRunnableConfig } from "@langchain/langgraph";
-const config = { configurable: { thread_id: "1", user_id:"1" } };
+import { Annotation, MessagesAnnotation ,StateGraph , MemorySaver } from "@langchain/langgraph";
 
 //import { createOpenAI } from "@ai-sdk/openai";
 //
 //const openai = createOpenAI({ apiKey: process.env.OPENAI_API_KEY });
 //const model= openai.chat('gpt-4')
-const inMemoryStore = new InMemoryStore();
+
 import { ChatOpenAI } from "@langchain/openai";
 const model = new ChatOpenAI({
   temperature: 0,
   modelName: "gpt-4o",
 })
 
-
-const updateMemory = async (
-  state: typeof MessagesAnnotation.State,
-  config: LangGraphRunnableConfig
-) => {
-  // Get the store instance from the config
-  const store = config.store;
-
-  // Get the user id from the config
-  const userId = config.configurable?.user_id;
-
-  // Namespace the memory
-  const namespace = [userId, "memories"];
-
-  // ... Analyze conversation and create a new memory
-
-  // Create a new memory ID
-  const memoryId = '1';
-  
-  // We create a new memory
-  await store?.put(namespace, memoryId, {
-    message: '다음은 종합병원에 속한 의사 정보를 담은 DOCTOR 테이블입니다. DOCTOR 테이블은 다음과 같으며 DR_NAME, DR_ID, LCNS_NO, HIRE_YMD, MCDP_CD, TLNO는 각각 의사이름, 의사ID, 면허번호, 고용일자, 진료과코드, 전화번호를 나타냅니다.'
-  });
-
-   
-};
-
-
-
-
 // Define State Schema
 const StateAnnotation = Annotation.Root({
   ...MessagesAnnotation.spec,
   questionType: Annotation<string>,
-
+  sql:Annotation<string>
 });
 
 // Get last user input from messages
@@ -95,28 +65,16 @@ function LastMessageContent(state: typeof StateAnnotation.State) {
 
 
 // 1. JudgeIntent node
-const judgeIntent = async (state: typeof StateAnnotation.State, config: LangGraphRunnableConfig ) => {
+const judgeIntent = async (state: typeof StateAnnotation.State) => {
  
   const question = LastMessageContent(state)
-
-  if(state.messages.length==1){
-    //경우에
-   await  updateMemory(state,config)
-  }
-
-  const store = config.store;
-  // Get the user id from the config
-  const userId = config.configurable?.user_id;
-  const memories = await store?.search([userId, "memories"]);
-  const messages_message = memories?.map(item => item.value.message);
 
 
   const systemPrompt = `
   당신은 사용자의 질문이 SQL 쿼리 생성을 위한 적합성에 따라 다음 네 가지 범주 중 하나로 분류하는 어시스턴트입니다.
   
   사용자의 질문을 다음 중 하나로 분류하세요:
-  이때 데이터 베이스의 데이터는 ${messages_message} 이러합니다.
-
+  
    AMBIGUOUS:
   질문이 SQL을 생성하기에는 구체성이 부족합니다. 추가 질문 없이는 쿼리를 만들 수 없습니다.
   질문이 SQL 쿼리를 만들기엔 구체성이 부족함
@@ -137,13 +95,8 @@ const judgeIntent = async (state: typeof StateAnnotation.State, config: LangGrap
   
   다음 중 하나로만 응답하세요: AMBIGUOUS, ANSWERABLE, UNANSWERABLE,IMPROPER.
   `;
-
-  // 여기서 데이터는 이러합니다를 제공해야됨.
-  // 기존의 쿼리가 있는경우에는 쿼리를 넣어주는 (multi turn 이 가능한지도 확인해야됨);
-
   
-  
-    const userPrompt = `Input: ${question} Reply in JSON: { "questionType": "ANSWERABLE" }`;
+  const userPrompt = `Input: ${question} Reply in JSON: { "questionType": "ANSWERABLE" }`;
 
   const result = await model.invoke([
     { role: "system", content: systemPrompt },
@@ -184,17 +137,8 @@ const clarifier = async (state: typeof StateAnnotation.State) => {
 // 3. SQL Generator node 여기는 원래 hugging face 에서 모델 가져와야되는데. 우선 그냥 chatgpt 한테 만들어달라고 하는공간
 
 
-const generateSQL = async (state: typeof StateAnnotation.State, config: LangGraphRunnableConfig) => {
-  const store = config.store;
-  // Get the user id from the config
-  const userId = config.configurable?.user_id;
-  const memories = await store?.search([userId, "memories"]);
-  const messages_message = memories?.map(item => item.value.message);
+const generateSQL = async (state: typeof StateAnnotation.State) => {
 
-  if(memories){
-    // 가 있다면?여기에다가 넣고 아니면 안넣고 
-  }
- 
   const userPrompt = `
   Return a valid Json object like this format Only this turn :
   {
@@ -206,7 +150,7 @@ const generateSQL = async (state: typeof StateAnnotation.State, config: LangGrap
   }
   `;
   const result = await model.invoke([
-    { role: "system", content: `당신은 SQL 생성기입니다. SQL 쿼리와 간단한 자연어 질의를 만들어주세요.이때 데이터는 ${messages_message} ` },
+    { role: "system", content: "당신은 SQL 생성기입니다. SQL 쿼리와 간단한 자연어 질의를 만들어주세요. " },
     ...state.messages,
     {
       role: "user",
@@ -299,9 +243,5 @@ builder.addEdge("CannotAnswer", "__end__");
 builder.addEdge("RespondPolitely", "__end__");
 
 const checkpointer = new MemorySaver();
-
-const sqlGraph = builder.compile({
-  checkpointer,
-  store: inMemoryStore
-});
+const sqlGraph = builder.compile({checkpointer});
 export default sqlGraph;

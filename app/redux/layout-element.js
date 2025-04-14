@@ -45,7 +45,7 @@ export const layoutElements = (tree, rootId, direction = 'TB') => {
     },
   );
  
-  console.log(entitreeNodes)
+
  
 
    let edges=[];
@@ -53,14 +53,15 @@ export const layoutElements = (tree, rootId, direction = 'TB') => {
   entitreeEdges.forEach((edge) => {
     const sourceNode = edge.source.id;
     const targetNode = edge.target.id;
- 
+     
     const newEdge = {};
  
     newEdge.id = 'e' + sourceNode + targetNode;
     newEdge.source = sourceNode;
     newEdge.target = targetNode;
-    newEdge.type = 'smoothstep';
+    newEdge.type = 'custom';
     newEdge.animated = true;
+    newEdge.data=''
  
     // Check if target node is spouse or sibling
     const isTargetSpouse = !!edge.target.isSpouse;
@@ -80,7 +81,7 @@ export const layoutElements = (tree, rootId, direction = 'TB') => {
     edges.push(newEdge);
   });
  
-  entitreeNodes.forEach((node) => {
+  entitreeNodes.forEach((node,index) => {
     const newNode = {};
  
     const isSpouse = !!node?.isSpouse;
@@ -111,25 +112,12 @@ export const layoutElements = (tree, rootId, direction = 'TB') => {
     };
     newNode.sql=node.data[0];
     newNode.description=node.data[1];
-
+    console.log(edges,'엣지',node.data[2])
+    if( edges && node.data[2]) {edges[index-1].data=node.data[2] ;  } 
+  
     nodes.push(newNode);
   });
- //const edges = [{ id: '1-2', source: '1', target: '2' }];
- //const nodes = [
- // {
- //   id: '1',
- //   data: { label: 'Hello' },
- //   position: { x: 0, y: 0 },
- //   type: 'input',
- // },
- // {
- //   id: '2',
- //   data: { label: 'World' },
- //   position: { x: 100, y: 100 },
- // },
-//;
- //
-  //return {}
+
  
   return { nodes, edges };
 };

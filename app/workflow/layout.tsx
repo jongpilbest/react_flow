@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Header from "./_components/Header/Header"
-import ChatLayout from './_components/Header/Chat/Chat_layout'
+import Header from "./Header/Header"
+import ChatLayout from './Header/Chat/Chat_layout'
 import { Button } from "react-day-picker";
 
 

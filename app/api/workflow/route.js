@@ -8,17 +8,17 @@ import Graph from './Graph'
 // 이건뭐임?
 
 export async function POST(request) {
-  const { input }= await request.json();
-
+  const { input_result,id }= await request.json();
+  const user_id = "1";
 
   const eventStream = await Graph.invoke(
     {
       messages:[{
         role:"user",
-        content:input
+        content:input_result
     }]
     },{
-      configurable: { thread_id: '1' },
+      configurable: { thread_id: id,user_id },
     }
   );
 

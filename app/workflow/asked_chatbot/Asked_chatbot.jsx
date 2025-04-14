@@ -1,7 +1,7 @@
 import React from 'react'
 import Nodecomponents from '../nodes/Nodecomponents'
 import Asked_inner from './Asked_inner'
-import {data_chat_gpt}from '../../../../lib/Data/data'
+import {data_chat_gpt}from '../../../lib/Data/data'
 const [IconComponent ,TextComponent ,labelComponent] =
  [data_chat_gpt.icon,data_chat_gpt.text,data_chat_gpt.label]
  

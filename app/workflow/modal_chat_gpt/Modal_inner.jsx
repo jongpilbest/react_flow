@@ -5,37 +5,40 @@ import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { useSelector, useDispatch } from 'react-redux';
 import { addChildNode } from '@/app/redux/Node_Store';
-import {modal_struction} from './modal_structure'
-import { change_open } from "@/app/redux/Database";
 
+
+import {modal_struction} from './modal_struction'
 import{Loader } from 'lucide-react'
 
 
 
-export default function ModalInner({id}) {
-  const [result, setResult] = useState([]);
+export default function ModalInner({id,setopen,description}) {
+
   const reduxNodes = useSelector((state) => state.node.nodes);
-
-
+  const[result,setResult]=useState([]);
+  const [input,setinput]=useState("")
 
   const handleSubmit = async (e) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
+    let input_result=input;  
+    if(description) input_result=input_result+'+'+description
+  
     usepending((el)=>!el);
     const res = await fetch('/api/workflow', {
       method: 'POST',
-      body: JSON.stringify({ input }),
+      body: JSON.stringify({ input_result ,id }),
     });
      const data = await res.json();
      setResult(data.messages);
-
+  
      usepending((el)=>!el);
   };
  
 
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.db.db); 
 
- const [input,setinput]=useState("")
+
+
 
  const [pending,usepending]=useState(false);
 
@@ -47,18 +50,11 @@ export default function ModalInner({id}) {
   const handleSubmit_2 = async (messages) => {
 
   
-    //부모 노드에 해당하는아이디를 가져온다음 넣어야됨  우선은 아이디를 하드 코딩으로 넣음
-    // 여기서 json 형태인 string 으로 받아왓으니 parse 을 이용해야된다. 
-    const last_number_tree=Object.keys(reduxNodes).length+1;
-   
-    //  let chat = {
-    //    sql:messages[0],
-    //    description:messages[1],
-    //    parent_id:id,
-    //    child_id:(parseInt(id)+1).toString(),
-    //    
-    //  };
+ 
 
+    const last_number_tree=Object.keys(reduxNodes).length+1;
+
+  
       const newNode={
         [last_number_tree]: {
           id: last_number_tree.toString(),
@@ -69,30 +65,16 @@ export default function ModalInner({id}) {
         },
        }
 
-    //  3: {
-    //    id: '3',
-    //    name: '',
-    //    type: 'Child',
-    //    children: [],
-    //    siblings: [],
-    //    spouses: [],
-    //    data: ['sql~', '고용일자 오름차순 + 연봉순 내림차순해줘 +  group by 으로 연봉을 묶어줘']
-    //  }
 
       //api 호출 하느거 
       usepending((el)=>!el);
       let response=await modal_struction(reduxNodes,newNode )
-     
-      dispatch(addChildNode({data:JSON.parse(response), newSql:newNode}))
 
-
+      dispatch(addChildNode({data:JSON.parse(response)}))
       usepending((el)=>!el);
-       
+      setopen((el)=>!el)  
    
-     // dispatch(addChildNode(chat));
-      //노드를 추가하기 
 
-    //dispatch(change_open()); // UI 갱신
   };
   
   /// html 
@@ -119,7 +101,7 @@ z-50 bg-white">
   </div>
     <div className='p-3 bg-pink      w-full grid gap-2'>
      
-      <div className='w-full h-[600px]   overflow-y-auto  '>
+      <div className='w-full h-[500px]   overflow-y-auto  '>
       {pending && <Loader size={18} className='animate-spin stroke-blue-800' />}
       {result.map((e) => {
      const isUser =  e.id[2] === "HumanMessage";
@@ -175,27 +157,3 @@ z-50 bg-white">
   );
 }
 
-
-//   {mutation.isPending && 
-//  <Loader size={18} className='animate-spin stroke-green-400' />
-//} 
-//{mutation.isSuccess && 
-//  <div className='grid gap-2'>
-//    <p className='text-xs font-bold uppercase text-muted-foreground'>answer</p>
-//    <div className='py-4 bg-secondary'>
-//      {filterdata.map((el) => (
-//        <Modal_check 
-//          check={check}
-//          key={el.step}
-//          data={el}
-//          handleCheckboxChange={handleCheckboxChange}
-//        />
-//      ))}
-//    </div>
-//    <div className='flex justify-end'>
-//      <Button onClick={()=>handleSubmit()} className="p-3 h-4 text-sm hover:bg-blue-700 bg-pink-400">
-//        Check
-//      </Button>
-//    </div>
-//  </div>
-//}

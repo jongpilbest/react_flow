@@ -16,10 +16,10 @@ import { useSelector } from "react-redux";
 import Parents_node from "./parent_node/Parent_node";
 import Child_nodes from "./child_node/Child_nodes";
 import ASked_node from "./asked_chatbot/Asked_chatbot";
-import { treeRootId } from '../../redux/Intial_node';
-import { layoutElements } from '../../redux/layout-element';
+import { treeRootId } from '../redux/Intial_node';
+import { layoutElements } from '../redux/layout-element';
 import CustomNode_ex from './parent_node/CustomNode_ex';
-
+import CustomEdge from  "./child_node/CustomEdge";
 
 const nodeTypes = {
   Node: Parents_node,
@@ -28,12 +28,18 @@ const nodeTypes = {
   custom:CustomNode_ex
 };
 
+const edgeTypes = {
+  custom: CustomEdge,
+}
+
 export default function FlowEditor() {
   const reduxNodes = useSelector((state) => state.node.nodes); // 실제 트리 형식의 node 데이터
   //const reduxEdges = useSelector((state) => state.node.edges); // 필요하다면 edge 데이터도 관리
 
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+
+
 
   const onConnect = useCallback(
     (params) =>
@@ -55,7 +61,7 @@ export default function FlowEditor() {
       treeRootId,
       'TB'
     );
-    console.log(layoutedNodes,layoutedEdges,'확인부탁요')
+ 
     setNodes(layoutedNodes);
     setEdges(layoutedEdges); // 필요하면 같이 업데이트
   }, [reduxNodes, setNodes, setEdges]);
@@ -64,6 +70,7 @@ export default function FlowEditor() {
     <main className="h-full w-full bg-slate-100">
       <ReactFlow
         nodes={nodes}
+        edgeTypes={edgeTypes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}

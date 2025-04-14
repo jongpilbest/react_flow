@@ -1,15 +1,19 @@
 import React from 'react'
 import { Position,Handle } from '@xyflow/react';
-import DataTable_form from '@/app/utils/DataTable_form '
-function Child_inner({description,sql,data}) {
-  
+import Chat_component from '../modal_chat_gpt/Chat_component';
+
+import { useNodeId } from '@xyflow/react';
+function Child_inner({description,sql}) {
+    const nodeId = useNodeId();
 
   return (
-    <>
+    <div key={nodeId}>
+    <Chat_component description={description} id={nodeId}></Chat_component>
     
     <Handle
         id="top"
         type="target"
+        
         position={Position.Top}
         className="bg-blue-500 w-3 h-3"
       />
@@ -34,7 +38,7 @@ function Child_inner({description,sql,data}) {
         </div>
 
         </div>
-        </>
+        </div>
   )
 }
 export default React.memo(Child_inner)

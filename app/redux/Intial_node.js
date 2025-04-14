@@ -16,7 +16,7 @@ export const initialTree = {
     children: [],
     siblings: [],
     spouses: [],
-    data:['SELECT DR_NAME, HIRE_YMD FROM DOCTOR WHERE MCDP_CD = GS','진료과 코드(MCDP_CD)가 GS인 의사들의 이름(DR_NAME)과 고용일자(HIRE_YMD)를 조회합니다.']
+    data:['SELECT DR_NAME, HIRE_YMD FROM DOCTOR WHERE MCDP_CD = GS','진료과 코드(MCDP_CD)가 GS인 의사들의 이름(DR_NAME)과 고용일자(HIRE_YMD)를 조회합니다.','+ select']
   }
   
 };
