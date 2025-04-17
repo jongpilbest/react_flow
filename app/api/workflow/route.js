@@ -3,7 +3,7 @@
 
 import { NextResponse } from 'next/server';
 import Graph from './Graph'
-
+import sqlGraph_flow from './NewGraph'
 
 // 이건뭐임?
 
@@ -11,7 +11,7 @@ export async function POST(request) {
   const { input_result,id }= await request.json();
   const user_id = "1";
 
-  const eventStream = await Graph.invoke(
+  const eventStream = await sqlGraph_flow.invoke(
     {
       messages:[{
         role:"user",

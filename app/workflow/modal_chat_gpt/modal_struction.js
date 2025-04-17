@@ -5,17 +5,24 @@ export async function modal_struction(initialTree,newSQL){
 
    
        const prompt = `
-   주어진 트리 initialTree와 newSQL 쿼리 및 설명을 기반으로 트리를 수정하세요.
-   newSQL 객체의 data[0]에는 SQL 쿼리, data[1]에는 설명이 들어있습니다.
-   
-   규칙:
-   1. 새 SQL이 기존 노드의 결과를 사용하면 해당 노드의 children에 추가
-   2. 의존하지 않으면 '1'의 children에 추가
-   3. 기존 노드 구조(id, name 등)는 그대로, children만 수정
-   4. 부모 SQL과 자식 SQL의 문법 차이를 간단히 비교하여 data[2]에 추가 
-     4-1 : "예시: 4 : "예시: + WHERE, + ORDER BY, + GROUP BY, + HAVING, + LIMIT, + JOIN, + ON, + SELECT , + IN, + EXISTS, + CASE, + UNION, + ALIAS(AS), + SUBQUERY, + BETWEEN, + LIKE"
-
-   initialTree:
+        [규칙]
+        
+      1. 새 SQL이 기존 노드의 결과를 사용하는 경우, 해당 노드 ID를 부모로 삼고 children 배열에 새 노드의 ID를 추가하세요.
+        - '결과를 사용한다'는 것은 다음 중 **하나 이상**을 만족하는 경우입니다:
+          a. 새 SQL의 FROM 절이 기존 노드와 동일한 테이블을 사용하며,
+          b. 새 SQL이 기존 노드가 조회한 SELECT 컬럼을 그대로 포함하거나,
+          c. 기존 SQL에 정렬, 필터, 그룹화 등의 문법을 **추가한 형태**인 경우입니다 (예: + WHERE, + ORDER BY, + LIMIT 등)
+          d. 새 SQL이 기존 SQL의 결과를 **서브쿼리로 감싼 경우** (SELECT ... WHERE IN (SELECT ...))
+        2. 의존 관계가 없다면 ID가 '1'인 루트 노드의 children에 새 노드 ID를 추가하세요.
+        3. 기존 노드 구조(id, name 등)는 변경하지 않고, children 필드만 업데이트하세요.
+        4. 새로운 노드의 data[2]에는 부모 SQL과 자식 SQL 간 문법 차이를 설명하고, 다음과 같은 형식의 예시를 추가하세요: 
+           '예시: + WHERE, + ORDER BY, + GROUP BY, + LIMIT, + JOIN, + ON, + IN, + EXISTS, + CASE, + UNION, + ALIAS(AS), + SUBQUERY, + BETWEEN, + LIKE'
+        
+        [newSQL]
+        - data[0]: 새 SQL 쿼리
+        - data[1]: 쿼리 설명
+        
+        반환 형식: 수정된 initialTree 객체"
    \`\`\`json
    ${JSON.stringify(initialTree, null, 2)}
    \`\`\`
@@ -49,6 +56,6 @@ export async function modal_struction(initialTree,newSQL){
      });
      
      const dataResponse = await response.json();
-     console.log(dataResponse.choices[0].message.content,'??????')
+  
      return dataResponse.choices[0].message.content
    }

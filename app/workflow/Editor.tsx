@@ -4,7 +4,7 @@ import FlowEditor from './FlowEditor'
 import { useSelector, useDispatch } from 'react-redux';
 import { addChildNode } from '@/app/redux/Node_Store';
 export default function Editor({}) {
-  const dispatch = useDispatch();
+
   return (
     <div className='w-full'>
      

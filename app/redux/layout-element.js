@@ -44,6 +44,8 @@ export const layoutElements = (tree, rootId, direction = 'TB') => {
         : Orientation.Vertical,
     },
   );
+
+  console.log(entitreeNodes,'엣지 뭔데')
  
 
  
@@ -51,6 +53,10 @@ export const layoutElements = (tree, rootId, direction = 'TB') => {
    let edges=[];
    let nodes=[];
   entitreeEdges.forEach((edge) => {
+
+  
+
+
     const sourceNode = edge.source.id;
     const targetNode = edge.target.id;
      
@@ -112,12 +118,13 @@ export const layoutElements = (tree, rootId, direction = 'TB') => {
     };
     newNode.sql=node.data[0];
     newNode.description=node.data[1];
-    console.log(edges,'엣지',node.data[2])
+
     if( edges && node.data[2]) {edges[index-1].data=node.data[2] ;  } 
   
     nodes.push(newNode);
   });
-
+ 
+  console.log(nodes,'노드 갯수가 급 몇개?',nodes.length)
  
   return { nodes, edges };
 };

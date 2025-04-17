@@ -29,8 +29,8 @@ export default function ModalInner({id,setopen,description}) {
       body: JSON.stringify({ input_result ,id }),
     });
      const data = await res.json();
-     setResult(data.messages);
-  
+     //setResult(data.messages);
+     console.log(data,'데이터 ')
      usepending((el)=>!el);
   };
  

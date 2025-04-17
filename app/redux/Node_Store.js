@@ -10,6 +10,31 @@ export const userSlice = createSlice({
     },
 
     reducers: {
+
+      addFlowChildNode:(state,action)=>{
+        //처음에 있는 children의child 만 수정하면될거 같은데 
+       //action.payload.start
+       
+      
+        for (const el in action.payload.data) {
+       
+              state.nodes[el] = action.payload.data[el]; 
+              if( el==action.payload.start){
+                state.nodes[el] = action.payload.data[el];
+                state.nodes['1'].children.push(action.payload.start)
+              }
+              else{
+                //없는경우에는 여기가 잘못되서 글런가..? 아이디 없을때 달라고 해야되나 
+                
+                 if(!state.nodes[el])  state.nodes[el] = action.payload.data[el];
+              }
+            
+             
+        }
+       
+        
+      },
+
         addChildNode: (state, action) => {
   
        
@@ -35,7 +60,7 @@ export const userSlice = createSlice({
     },
 });
 
-export const { addChildNode } = userSlice.actions;
+export const { addChildNode ,addFlowChildNode } = userSlice.actions;
 
 export default userSlice.reducer;
 

@@ -34,12 +34,12 @@ const edgeTypes = {
 
 export default function FlowEditor() {
   const reduxNodes = useSelector((state) => state.node.nodes); // 실제 트리 형식의 node 데이터
-  //const reduxEdges = useSelector((state) => state.node.edges); // 필요하다면 edge 데이터도 관리
+
 
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
-
+ console.log(nodes,edges)
 
   const onConnect = useCallback(
     (params) =>
@@ -61,6 +61,7 @@ export default function FlowEditor() {
       treeRootId,
       'TB'
     );
+    
  
     setNodes(layoutedNodes);
     setEdges(layoutedEdges); // 필요하면 같이 업데이트

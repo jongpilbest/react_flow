@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
 export default function Nodecard({children}) {
-  //const [isSelected, setIsSelected] = useState(false);
- // onClick={() => setIsSelected(!isSelected)}
+
   return (
     <div
       className={`rounded-sm relative cursor-pointer bg-background height-[200px] border-separate w-[420px] text-sm
@@ -13,4 +12,3 @@ export default function Nodecard({children}) {
     </div>
   );
 }
-//${isSelected ? 'border-primary' : 'border-gray-300'}

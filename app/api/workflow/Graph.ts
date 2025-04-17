@@ -2,12 +2,9 @@
 import { z } from "zod";
 import { AIMessage } from "@langchain/core/messages"
 import { Annotation, MessagesAnnotation ,StateGraph, InMemoryStore ,MemorySaver ,LangGraphRunnableConfig } from "@langchain/langgraph";
-const config = { configurable: { thread_id: "1", user_id:"1" } };
 
-//import { createOpenAI } from "@ai-sdk/openai";
-//
-//const openai = createOpenAI({ apiKey: process.env.OPENAI_API_KEY });
-//const model= openai.chat('gpt-4')
+
+
 const inMemoryStore = new InMemoryStore();
 import { ChatOpenAI } from "@langchain/openai";
 const model = new ChatOpenAI({
@@ -191,10 +188,7 @@ const generateSQL = async (state: typeof StateAnnotation.State, config: LangGrap
   const memories = await store?.search([userId, "memories"]);
   const messages_message = memories?.map(item => item.value.message);
 
-  if(memories){
-    // 가 있다면?여기에다가 넣고 아니면 안넣고 
-  }
- 
+
   const userPrompt = `
   Return a valid Json object like this format Only this turn :
   {

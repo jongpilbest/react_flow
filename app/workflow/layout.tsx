@@ -3,8 +3,9 @@
 import React, { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Header from "./Header/Header"
-import ChatLayout from './Header/Chat/Chat_layout'
-import { Button } from "react-day-picker";
+import Time_to from "./Header/Time_to_sql"
+import Store  from '../redux/store'
+import { Provider } from 'react-redux';
 
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -13,12 +14,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-    
+
+   <Provider store={Store}>
+    <Time_to></Time_to>
       <div className="flex flex-row w-full h-screen">
-        <Header></Header>
+      <Header></Header>
         {children}
- 
       </div>
+      </Provider>
     </QueryClientProvider>
   );
 }
