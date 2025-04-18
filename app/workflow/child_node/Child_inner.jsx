@@ -1,10 +1,11 @@
 import React from 'react'
 import { Position,Handle } from '@xyflow/react';
 import Chat_component from '../modal_chat_gpt/Chat_component';
-
+import Child_Component from './Child_Component'
 import { useNodeId } from '@xyflow/react';
 function Child_inner({description,sql,data}) {
-    const nodeId = useNodeId();
+    const nodeId = useNodeId() +description.slice(2,5)+sql.slice(-1,-4);
+
     const { isSpouse, isSibling, label, direction } = data;
     
 
@@ -60,20 +61,8 @@ function Child_inner({description,sql,data}) {
           id={getTargetPosition()}
         />
       )}
-    <div className='p-3 bg-white w-[420px] height-[200px] grid gap-2'>
-       <p className='text-xs font-bold uppercase text-muted-foreground '>description</p>
-       <div className='py-4 px-3 text-xs bg-secondary'>
-        {description}
-        </div>
-        <p className='text-xs font-bold uppercase text-muted-foreground '>SQL Query</p>
-       <div className='py-4 px-3 text-xs  bg-secondary'>
-       {sql}
-        </div>
-        <p className='text-xs font-bold uppercase text-muted-foreground '>Result</p>
-       <div className='  bg-secondary'>
-        </div>
+      <Child_Component  description={description} sql={sql} step=''></Child_Component>
 
-        </div>
         </div>
   )
 }

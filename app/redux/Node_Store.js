@@ -14,11 +14,10 @@ export const userSlice = createSlice({
       addFlowChildNode:(state,action)=>{
         //처음에 있는 children의child 만 수정하면될거 같은데 
        //action.payload.start
-       
-      
+
         for (const el in action.payload.data) {
        
-              state.nodes[el] = action.payload.data[el]; 
+              //state.nodes[el] = action.payload.data[el]; 
               if( el==action.payload.start){
                 state.nodes[el] = action.payload.data[el];
                 state.nodes['1'].children.push(action.payload.start)

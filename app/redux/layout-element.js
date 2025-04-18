@@ -45,7 +45,7 @@ export const layoutElements = (tree, rootId, direction = 'TB') => {
     },
   );
 
-  console.log(entitreeNodes,'엣지 뭔데')
+
  
 
  

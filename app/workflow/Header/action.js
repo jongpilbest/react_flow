@@ -118,31 +118,64 @@ async function modal_struction(text_description,Start_number,rootNode){
       ]
     }
   }
-
-  📐 절 단위 분해 기준 (추가)
-- JOIN 절은 SELECT ~ FROM ~ 다음에 나오는 하나의 JOIN 노드로 묶습니다.
-- JOIN 노드의 children 으로 ON 절을 분리합니다.
-- ON 절 내에 여러 조건이 있으면,  
-  • 하나의 ON 노드로 처리하거나  
-  • AND로 연결된 각 조건을 siblings(=spouses)로 분기할 수 있습니다.
-
-- JOIN 노드 설명에는 반드시 
-  "+ JOIN 절 도입 → 아래 ON 절로 분기됩니다" 
-  문구를 포함하세요.
-- ON 절을 처리하는 노드 설명에는 
-  "+ JOIN 조건이 메인 흐름에 반영됨" 
-  문구를 넣습니다.
-
-   📐 절 단위 분해 기준:
-  - … (기존 분해 기준)
-  - JOIN 절도 하나의 노드로 묶습니다.
-    • children: ON 절 노드
-    • 설명에 "+ JOIN 절 도입 → 아래 ON 절로 분기됩니다" 포함
-  - ON 절 내 각 조건은 children 또는 spouses로 분기합니다.
-  
-  📌 JOIN 처리 필수 규칙:
-  - JOIN 절 도입 노드의 data[2]에 "+ JOIN 절 도입 → 아래 ON 절로 분기됩니다" 추가
-  - ON 절 노드의 data[2]에 "+ JOIN 조건이 메인 흐름에 반영됨" 추가
+    📦 예시2 :
+{
+  "1": {
+    "id": "1",
+    "name": "Step 1",
+    "type": "Child",
+    "children": ["2"],
+    "data": [
+      "SELECT A.name, B.salary FROM EMPLOYEE A",
+      "EMPLOYEE 테이블에서 직원 이름을, SALARY 테이블에서 급여를 가져옵니다.",
+      "+ SELECT 절 도입"
+    ]
+  },
+  "2": {
+    "id": "2",
+    "name": "Step 2",
+    "type": "Child",
+    "children": ["3", "4"],
+    "data": [
+      "LEFT JOIN SALARY B ON A.id = B.emp_id",
+      "EMPLOYEE 테이블을 SALARY 테이블과 LEFT JOIN으로 결합합니다.",
+      "+ JOIN 절 도입 → 아래 ON 절 및 메인 흐름 분기됩니다"
+    ]
+  },
+  "3": {
+    "id": "3",
+    "name": "Step 2-1",
+    "type": "Child",
+    "children": ["5"],
+    "data": [
+      "ON A.id = B.emp_id",
+      "JOIN 조건을 분리하여 처리합니다.",
+      "+ JOIN 조건이 메인 흐름에 전개됩니다"
+    ]
+  },
+  "4": {
+    "id": "4",
+    "name": "Step 3",
+    "type": "Child",
+    "children": ["5"],
+    "data": [
+      "JOIN 결과가 메인 흐름에 반영됨",
+      "JOIN을 적용한 결과를 메인 쿼리에 통합합니다.",
+      "+ JOIN 결과가 메인 흐름에 반영됨"
+    ]
+  },
+  "5": {
+    "id": "5",
+    "name": "Step 4",
+    "type": "Child",
+    "children": [],
+    "data": [
+      "SELECT A.name, B.salary FROM EMPLOYEE A LEFT JOIN SALARY B ON A.id = B.emp_id",
+      "최종 SQL 쿼리를 완성합니다.",
+      "+ 전체 SQL 문 최종 조합 완료"
+    ]
+  }
+}
 
 
   `;
