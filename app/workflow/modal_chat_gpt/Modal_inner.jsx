@@ -49,7 +49,7 @@ const renderMessage= useMemo(()=>{
     const isUser =  e.id[2] === "HumanMessage";
     let e_message=''
      isUser==true?e_message=e.kwargs.content:e_message= JSON.parse(e.kwargs.content) 
-     console.log(e)
+
  
           return (
         <div

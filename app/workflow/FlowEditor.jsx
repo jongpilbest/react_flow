@@ -39,7 +39,7 @@ export default function FlowEditor() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
- console.log(nodes,edges)
+
 
   const onConnect = useCallback(
     (params) =>

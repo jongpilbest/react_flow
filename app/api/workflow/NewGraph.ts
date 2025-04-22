@@ -198,7 +198,7 @@ const ANSWERABLE = async (state: typeof StateAnnotation.State) => {
 - 각 키는 **단계 번호** 문자열로, 값은 객체입니다.
 - 각 객체는 반드시 "description"과 "query" 필드를 포함합니다.
 - 코드 블록 없이, JSON 객체만 응답해주세요
-**tableData**는 최대 3행만 포함됩니다.
+- tableData는 최대 3행만 포함됩니다.
 
 예시 응답 구조:
 
@@ -235,7 +235,7 @@ const ANSWERABLE = async (state: typeof StateAnnotation.State) => {
       "description": "Employees와 Departments 테이블의 스키마와 예시 데이터를 확인합니다.",
       "tableData": [
     [
-          ["EmployeeID", "Name", "DeptID"],//최대 3개만
+          ["EmployeeID", "Name", "DeptID"],
           [
             [1, "Alice", 1],
             [2, "Bob", 2],
@@ -243,7 +243,7 @@ const ANSWERABLE = async (state: typeof StateAnnotation.State) => {
           ]
     ],
          [
-          ["ID", "DeptName"], //최대 3개만
+          ["ID", "DeptName"], 
           [
             [1, "HR"],
             [2, "IT"]
@@ -276,7 +276,7 @@ const ANSWERABLE = async (state: typeof StateAnnotation.State) => {
 
   ❗️주의사항:
   - 출력은 무조건 JSON 객체만 포함되어야 하며, 
-   코드 블록(\`\`\`)도 없이 JSON만 출력해주세요.
+ - 설명이나 코드 블록(\`\`\`)도 없이 JSON만 출력해주세요.
 
   `
 

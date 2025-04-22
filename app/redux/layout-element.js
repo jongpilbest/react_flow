@@ -124,7 +124,7 @@ export const layoutElements = (tree, rootId, direction = 'TB') => {
     nodes.push(newNode);
   });
  
-  console.log(nodes,'노드 갯수가 급 몇개?',nodes.length)
+
  
   return { nodes, edges };
 };

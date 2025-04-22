@@ -192,14 +192,14 @@ const response = await fetch("https://api.openai.com/v1/chat/completions", {
         { role: "system", content: "당신은 SQL 전문가입니다. 자연어 요청에 대해 정확한 SQL을 생성하세요. 데이터는 다음은 종합병원에 속한 의사 정보를 담은 DOCTOR 테이블입니다. DOCTOR 테이블은 다음과 같으며 DR_NAME, DR_ID, LCNS_NO, HIRE_YMD, MCDP_CD, TLNO는 각각 의사이름, 의사ID, 면허번호, 고용일자, 진료과코드, 전화번호를 나타냅니다. 설명은 제외하고 sql 만 만들어주세요 "  },
         { role: "user", content: text_description }
       ],
-      temperature: 0.3,
+      temperature: 0.25,
     }),
   });
   
   const dataResponse = await response.json();
 
   const sqlQuery = dataResponse.choices[0].message.content
-  console.log(sqlQuery,'결과 뭐')
+
   const response2 = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
