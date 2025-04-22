@@ -3,59 +3,53 @@ import { Handle, Position } from '@xyflow/react';
  
 const { Top, Bottom, Left, Right } = Position;
  
- 
-export default memo(({ data }) => {
+
+
+const CustomNode = ({ data }) => {
   const { isSpouse, isSibling, label, direction } = data;
- 
+
   const isTreeHorizontal = direction === 'LR';
- 
+
   const getTargetPosition = () => {
     if (isSpouse) {
-      return isTreeHorizontal ? Top : Left;
+      return isTreeHorizontal ? Position.Top : Position.Left;
     } else if (isSibling) {
-      return isTreeHorizontal ? Bottom : Right;
+      return isTreeHorizontal ? Position.Bottom : Position.Right;
     }
-    return isTreeHorizontal ? Left : Top;
+    return isTreeHorizontal ? Position.Left : Position.Top;
   };
- 
+
   const isRootNode = data?.isRoot;
   const hasChildren = !!data?.children?.length;
   const hasSiblings = !!data?.siblings?.length;
   const hasSpouses = !!data?.spouses?.length;
- 
+
   return (
     <div className="bg-white flex justify-center">
-      {/* For children */}
       {hasChildren && (
         <Handle
           type="source"
-          position={isTreeHorizontal ? Right : Bottom}
-          id={isTreeHorizontal ? Right : Bottom}
+          position={isTreeHorizontal ? Position.Right : Position.Bottom}
+          id={isTreeHorizontal ? Position.Right : Position.Bottom}
         />
       )}
- 
-      {/* For spouses */}
       {hasSpouses && (
         <Handle
           type="source"
-          position={isTreeHorizontal ? Bottom : Right}
-          id={isTreeHorizontal ? Bottom : Right}
+          position={isTreeHorizontal ? Position.Bottom : Position.Right}
+          id={isTreeHorizontal ? Position.Bottom : Position.Right}
         />
       )}
- 
-      {/* For siblings */}
       {hasSiblings && (
         <Handle
           type="source"
-          position={isTreeHorizontal ? Top : Left}
-          id={isTreeHorizontal ? Top : Left}
+          position={isTreeHorizontal ? Position.Top : Position.Left}
+          id={isTreeHorizontal ? Position.Top : Position.Left}
         />
       )}
- 
-      {/* Target Handle */}
       {!isRootNode && (
         <Handle
-          type={'target'}
+          type="target"
           position={getTargetPosition()}
           id={getTargetPosition()}
         />
@@ -63,4 +57,8 @@ export default memo(({ data }) => {
       <div>{label}</div>
     </div>
   );
-});
+};
+
+CustomNode.displayName = 'CustomNode'; // 선택이지만 권장
+
+export default memo(CustomNode);

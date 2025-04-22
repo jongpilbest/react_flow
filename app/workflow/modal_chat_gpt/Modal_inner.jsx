@@ -73,7 +73,7 @@ const renderMessage= useMemo(()=>{
      {
        e_message.questionType =='ANSWERABLE' &&e_message.message.map((el)=>{
          const {step,description,tableData,query}= el 
-         return  <div key={step} className='bg-white my-2'>
+         return  <div key={step} className='bg-white my-2 w-[100%]'>
          <Child_Component  step={step} description={description}  tableData={tableData} sql={query} ></Child_Component>
          </div>
     

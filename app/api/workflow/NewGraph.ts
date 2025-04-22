@@ -64,26 +64,25 @@ function getLastUserMessage(state: typeof StateAnnotation.State) {
   return trimmedHistory; // 예시로 마지막 사용자 메시지를 반환
 }
 
-function LastMessageContent(state: typeof StateAnnotation.State) {
+function LastMessageContent(state: typeof StateAnnotation.State): string {
   const lastMessage = state.messages.at(-1);
   if (!lastMessage) return "";
 
   let content = "";
 
-  // LangChain 메시지 타입이라면
   if (typeof lastMessage.content === "string") {
     content = lastMessage.content;
-  }
+  } else if (Array.isArray(lastMessage.content)) {
+    type ChatMessage = { role: string; content: string };
 
-  // content가 배열일 수도 있으니 확인
-  else if (Array.isArray(lastMessage.content)) {
-    const userMsg = lastMessage.content
-      .filter((m: any) => m.role === "user")
+    const userMsg = (lastMessage.content as ChatMessage[])
+      .filter((m) => m.role === "user")
       .at(-1);
 
-    if (userMsg) {
-      content = userMsg.content;
-    }
+  if (userMsg) {
+  content = (userMsg as any).content;
+}
+
   }
 
   return content;

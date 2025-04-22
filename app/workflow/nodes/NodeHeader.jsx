@@ -19,5 +19,7 @@ const NodeHeader = React.memo(({ IconComponent, labelComponent, TextComponent })
   )
 }
 )
+NodeHeader.displayName = "NodeHeader";
+
 export default NodeHeader;
 
