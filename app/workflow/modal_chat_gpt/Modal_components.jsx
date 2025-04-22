@@ -3,7 +3,7 @@
 import React, { memo } from 'react'
 import Nodecard from '../nodes/Nodecard'
 
-import Modal_inner from './modal_inner'
+import Modal_inner from './Modal_inner'
 
 import Nodecomponents from '../nodes/Nodecomponents'
 import {data_chat_gpt}from '../../../lib/Data/data'
