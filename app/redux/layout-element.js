@@ -12,19 +12,19 @@ const Orientation = {
 const entitreeSettings = {
   clone: true, // returns a copy of the input, if your application does not allow editing the original object
   enableFlex: true, // has slightly better performance if turned off (node.width, node.height will not be read)
-  firstDegreeSpacing: 150, // spacing in px between nodes belonging to the same source, e.g. children with same parent
+  firstDegreeSpacing: 300, // spacing in px between nodes belonging to the same source, e.g. children with same parent
   nextAfterAccessor: 'spouses', // the side node prop used to go sideways, AFTER the current node
-  nextAfterSpacing: 100, // the spacing of the "side" nodes AFTER the current node
+  nextAfterSpacing: 300, // the spacing of the "side" nodes AFTER the current node
   nextBeforeAccessor: 'siblings', // the side node prop used to go sideways, BEFORE the current node
-  nextBeforeSpacing: 100, // the spacing of the "side" nodes BEFORE the current node
+  nextBeforeSpacing: 300, // the spacing of the "side" nodes BEFORE the current node
   nodeHeight, // default node height in px
   nodeWidth, // default node width in px
   orientation: Orientation.Vertical, // "vertical" to see parents top and children bottom, "horizontal" to see parents left and
   rootX: 50, // set root position if other than 0
   rootY: 50, // set root position if other than 0
-  secondDegreeSpacing: 100, // spacing in px between nodes not belonging to same parent eg "cousin" nodes
+  secondDegreeSpacing: 300, // spacing in px between nodes not belonging to same parent eg "cousin" nodes
   sourcesAccessor: 'parents', // the prop used as the array of ancestors ids
-  sourceTargetSpacing:150, // the "vertical" spacing between nodes in vertical orientation, horizontal otherwise
+  sourceTargetSpacing:300, // the "vertical" spacing between nodes in vertical orientation, horizontal otherwise
   targetsAccessor: 'children', // the prop used as the array of children ids
 };
  
@@ -118,8 +118,9 @@ export const layoutElements = (tree, rootId, direction = 'TB') => {
     };
     newNode.sql=node.data[0];
     newNode.description=node.data[1];
+    node.data[3]!=undefined? newNode.tableData=node.data[3]: newNode.tableData='';
 
-    if( edges && node.data[2]) {edges[index-1].data=node.data[2] ;  } 
+    if( edges[index] && node.data[2]) {edges[index].data=node.data[2] ;  } 
   
     nodes.push(newNode);
   });

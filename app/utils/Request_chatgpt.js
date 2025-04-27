@@ -199,7 +199,7 @@ export async function fetchSQLSolution (user,user2,userText) {
      return  dataResponse
       //return JSON.parse(dataResponse.choices[0].message.content)
     } catch (error) {
-      console.log(error.message,'에러메세지 ')
+     
       return '서버에서 에러가 발생했습니다.';
     }
   }

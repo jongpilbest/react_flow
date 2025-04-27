@@ -18,7 +18,7 @@ export default function Time_to_sql() {
       formData.append('initial_Tree', JSON.stringify(reduxNodes));
       const response= await Flow_chat(formData)
       // 으로 받은것
-    
+  
 
          //dispatch(addChildNode({data:JSON.parse(response)}))
       dispatch(addFlowChildNode({data:JSON.parse(response), start:last_number_tree }))
@@ -31,7 +31,7 @@ export default function Time_to_sql() {
     return (
       <button
         type="submit"
-        className="h-12 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+        className="h-8 px-4 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
         disabled={pending}
       >
         {pending ? 'Submitting...' : 'Sql Generate'}
@@ -40,10 +40,10 @@ export default function Time_to_sql() {
   }
 
   return (
-    <div className="react-flow__panel react-flow__controls vertical top-[5%] nopan absolute left-[20%] w-[60%] flex items-center bg-white rounded-2xl shadow-md px-3 py-2 z-50">
+    <div className="react-flow__panel react-flow__controls vertical top-[5%] nopan absolute left-[20%] w-[60%] flex items-center bg-white rounded-xl shadow-md px-3 py-2 z-50">
       <form action={actionHandler} className="flex w-full items-center gap-3">
         <input
-          className="flex-grow h-12 rounded-lg border border-gray-300 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-grow h-8  rounded-lg border border-gray-300 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           onChange={(e) => setinput(e.target.value)}
           name="productId"
           value={input}

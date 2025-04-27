@@ -7,11 +7,10 @@ const [IconComponent ,TextComponent ,labelComponent] =
  
 export default function Child_nodes({data}) {
   
-  
 
   return (
    <Nodecomponents IconComponent={IconComponent} TextComponent={TextComponent} labelComponent={labelComponent}>
-    <Child_inner data={data}  sql={data.data[0]} description={data.data[1]}>
+    <Child_inner data={data}  sql={data.data[0]} description={data.data[1]} tableData={data.data[3]}  >
     </Child_inner>
    </Nodecomponents>
   )

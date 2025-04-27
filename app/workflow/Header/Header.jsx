@@ -2,14 +2,14 @@ import React from 'react'
 import {Bot,Database} from "lucide-react"
 export default function Header() {
   return (
-    <div className=' w-20 flex flex-col   items-center h-full bg-white border border-gray-300 '>
-       <div className='h-10  w-10 mt-4 bg-pink-400 rounded-md 
+    <div className=' w-14 flex flex-col   items-center h-full bg-white border border-gray-300 '>
+       <div className='h-8  w-8 mt-4 bg-pink-400 rounded-md 
        
        flex justify-center items-center '>
-       <Bot size={25} className='stroke-white '></Bot>
+       <Bot size={20} className='stroke-white '></Bot>
        </div>
-       <div className='h-10  w-10 m-2 mt-10 bg-blue-400 rounded-md justify-center items-center flex '>
-       <Database size={20} className='stroke-white' strokeWidth={2.5} ></Database>
+       <div className='h-8  w-8 m-2 mt-10 bg-blue-400 rounded-md justify-center items-center flex '>
+       <Database size={16} className='stroke-white' strokeWidth={2.5} ></Database>
        </div>
      
      
