@@ -18,7 +18,7 @@ export default function Time_to_sql() {
       formData.append('initial_Tree', JSON.stringify(reduxNodes));
       const response= await Flow_chat(formData)
       // 으로 받은것
-  
+     console.log(response,'응답')
 
          //dispatch(addChildNode({data:JSON.parse(response)}))
       dispatch(addFlowChildNode({data:JSON.parse(response), start:last_number_tree }))
