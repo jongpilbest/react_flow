@@ -73,6 +73,7 @@ export default function FlowEditor() {
         nodes={nodes}
         edgeTypes={edgeTypes}
         edges={edges}
+  
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}

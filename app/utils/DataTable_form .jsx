@@ -4,7 +4,7 @@ import React from 'react'
  
    const [headers,tableDatas]= tableData
     
-
+  console.log('re-render')
 
   return (
    

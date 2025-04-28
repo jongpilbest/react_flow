@@ -17,7 +17,7 @@ import { useNodeId } from '@xyflow/react';
   return (
     <div className='flex justify-start relative p-3 bg-white w-full'
     >
-     <CSVUploader />
+
     <Chat_Component description='' id={nodeId}></Chat_Component>
      
     <Handle

@@ -33,12 +33,17 @@ Step 6 (서브쿼리 최종 SELECT 문):
 
 SELECT SPECIALTY FROM doctors GROUP BY SPECIALTY HAVING COUNT(*) >= 2로 최종적으로 SPECIALTY가 2명 이상인 값만 선택됩니다.
 
-Step 7 (최종 SELECT 문):
+Step 7 (최종 sql 문):
 
 SELECT DR_NAME, SPECIALTY FROM doctors WHERE SPECIALTY IN (서브쿼리)로 최종적으로 의사 이름과 진료과를 반환하고, SPECIALTY별로 정렬된 결과를 출력합니다.
 
+✏️ 강제 규칙:
+- 반드시 트리 마지막에 최종 SELECT SQL을 조립해 하나의 최종 노드를 생성하세요.
+- 사용자의 자연어 요청이 단순한 경우에도 (ex. WHERE 절 하나만 추가하는 경우에도)
+- 항상 마지막에 최종 SQL 문을 포함한 노드를 생성해야 합니다.
 
 규칙
+
 - 서브쿼리를 포함하는 노드는 반드시 **children을 2개 포함**해야 합니다:
     1. 서브쿼리 흐름의 시작 노드 (예: Step 2-1)
     2. 서브쿼리 결과를 기다리는 메인 흐름 노드 (예: Step 3)
@@ -53,7 +58,8 @@ SELECT DR_NAME, SPECIALTY FROM doctors WHERE SPECIALTY IN (서브쿼리)로 최�
      - SELECT 절 (스칼라 서브쿼리)
     - 이와 같은 중첩된 SELECT 문을 반드시 찾아내어, 내부 서브쿼리도 꼭  📌 - WHERE, GROUP BY, HAVING, ORDER BY  📌  등의 절 단위로 나눕니다.
     - 서브쿼리의 최종결과는 꼭 출력해주세요
-    
+  
+
    📏 작성 규칙:
   - 첫 노드의 id는 반드시 ${Start_number}로 시작하며, 이후는 1씩 증가시킵니다.
   - 전체 SQL 문은 반드시 **마지막 노드에서만 출력**되어야 하며, 중간 단계에서는 전체 SQL 또는 중간 결과를 출력하지 않습니다.
@@ -65,7 +71,7 @@ SELECT DR_NAME, SPECIALTY FROM doctors WHERE SPECIALTY IN (서브쿼리)로 최�
     - name: "Step 2-1" 등 단계 이름
     - type: "Child"
     - children: 다음 노드 ID 배열
-    - data: [SQL 조각, 설명, " 부모에서 추가된 + sql 문법 ]
+    - data: [SQL 조각, 설명, " 부모에서 추가된 + sql 문법(여러개가 추가됬으면 여러개를 보여주세요요) ]
      📘 예시 구성 규칙 :
      📌 -  꼭지켜주세요!!!!!! 📌
   data[0] 가       "FROM DOCTOR",
@@ -245,7 +251,7 @@ SELECT DR_NAME, SPECIALTY FROM doctors WHERE SPECIALTY IN (서브쿼리)로 최�
     "data": [
       "SELECT DR_NAME, SPECIALTY FROM doctors WHERE SPECIALTY IN (서브쿼리) ORDER BY SPECIALTY",
       "의사 이름(DR_NAME)과 진료과(SPECIALTY)를 반환하며, SPECIALTY별로 정렬된 결과를 출력합니다.",
-      "",
+      "최종결과",
       [
         [
           ["DR_NAME", "SPECIALTY"],
@@ -348,7 +354,7 @@ SELECT DR_NAME, SPECIALTY FROM doctors WHERE SPECIALTY IN (서브쿼리)로 최�
     "data": [
       "SELECT DR_NAME, DR_ID, LCNS_NO, HIRE_YMD, MCDP_CD, TLNO FROM DOCTOR WHERE HIRE_YMD = (SELECT MIN(HIRE_YMD) FROM DOCTOR)",
       "가장 오래 근무한 의사와 동일한 고용일자를 가진 모든 의사의 정보를 반환합니다.",
-      "",
+      "최종결과",
       [
         [
           ["DR_NAME", "DR_ID", "LCNS_NO", "HIRE_YMD", "MCDP_CD", "TLNO"],
@@ -361,6 +367,75 @@ SELECT DR_NAME, SPECIALTY FROM doctors WHERE SPECIALTY IN (서브쿼리)로 최�
   }
 }
 
+예시 3 
+{
+  "2": {
+    "id": "2",
+    "name": "Step 1: 원래 테이블",
+    "type": "Child",
+    "children": ["3"],
+    "data": [
+      "FROM DOCTOR",
+      "DOCTOR 테이블에서 데이터를 가져옵니다.",
+      "+ WHERE",
+      [
+        [
+          ["DR_NAME", "DR_ID", "LCNS_NO", "HIRE_YMD", "MCDP_CD", "TLNO"],
+          [
+            ["루피", "DR20090029", "LC00010001", "2009-03-01", "CS", "01085482011"],
+            ["패티", "DR20090001", "LC00010901", "2009-07-01", "CS", "01085220122"],
+            ["뽀로로", "DR20170123", "LC00091201", "2017-03-01", "GS", "01034969210"],
+            ["티거", "DR20100011", "LC00011201", "2010-03-01", "NP", "01034229818"],
+            ["품바", "DR20090231", "LC00011302", "2015-11-01", "OS", "01049840278"],
+            ["티몬", "DR20090112", "LC00011162", "2010-03-01", "FM", "01094622190"],
+            ["미키", "DR20210101", "LC00011456", "2021-01-01", "PD", "01012345678"],
+            ["도날드", "DR20210505", "LC00011567", "2021-05-05", "CD", "01087654321"]
+          ]
+        ]
+      ]
+    ]
+  },
+  "3": {
+    "id": "3",
+    "name": "Step 2: WHERE 조건 추가",
+    "type": "Child",
+    "children": ["4"],
+    "data": [
+      "WHERE HIRE_YMD > '2020-01-01'",
+      "2020년 1월 1일 이후에 입사한 의사만 필터링합니다.",
+      "최종결과",
+      [
+        [
+          ["DR_NAME", "DR_ID", "LCNS_NO", "HIRE_YMD", "MCDP_CD", "TLNO"],
+          [
+            ["미키", "DR20210101", "LC00011456", "2021-01-01", "PD", "01012345678"],
+            ["도날드", "DR20210505", "LC00011567", "2021-05-05", "CD", "01087654321"]
+          ]
+        ]
+      ]
+    ]
+  },
+  "4": {
+    "id": "4",
+    "name": "Step 3: 최종 SELECT 문",
+    "type": "Child",
+    "children": [],
+    "data": [
+      "SELECT * FROM DOCTOR WHERE HIRE_YMD > '2020-01-01'",
+      "2020년 1월 1일 이후에 입사한 모든 의사의 정보를 반환합니다.",
+      "최종결과",
+      [
+        [
+          ["DR_NAME", "DR_ID", "LCNS_NO", "HIRE_YMD", "MCDP_CD", "TLNO"],
+          [
+            ["미키", "DR20210101", "LC00011456", "2021-01-01", "PD", "01012345678"],
+            ["도날드", "DR20210505", "LC00011567", "2021-05-05", "CD", "01087654321"]
+          ]
+        ]
+      ]
+    ]
+  }
+} 
 
   📤 출력 규칙:
   - 출력은 설명 없이 **JSON 객체**만 반환합니다 (코드 블록 사용 금지).!!!! 꼭지켜주세요!!!

@@ -9,7 +9,7 @@ export default function Parent_node() {
 
   return (
     <Nodecomponents IconComponent={IconComponent} TextComponent={TextComponent}  labelComponent={labelComponent}>
-    <NodeInput ></NodeInput>
+    <NodeInput></NodeInput>
     </Nodecomponents>
   )
 }
