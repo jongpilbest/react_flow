@@ -253,7 +253,7 @@ const ANSWERABLE = async (state: typeof StateAnnotation.State) => {
     {
       "step": "2",
       "description": "Employees.DeptID와 Departments.ID가 일치하는 행만 내부 조인(INNER JOIN)하여 각 직원의 이름(Name)과 부서명(DeptName)을 조회합니다.",
-      "query": "SELECT e.Name, d.DeptName\\nFROM Employees e\\nINNER JOIN Departments d ON e.DeptID = d.ID;"
+      "query": "SELECT e.Name, d.DeptName\nFROM Employees e\nINNER JOIN Departments d ON e.DeptID = d.ID;"
     },
     {
       "step": "3",

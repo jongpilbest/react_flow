@@ -6,7 +6,7 @@ import Header from "./Header/Header"
 import Time_to from "./Header/Time_to_sql"
 import Store  from '../redux/store'
 import { Provider } from 'react-redux';
-
+import Monaco from './Header/input'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient()); // ✅ 오류 해결됨
@@ -16,9 +16,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
 
    <Provider store={Store}>
-    <Time_to></Time_to>
+
+  
       <div className="flex flex-row w-full h-screen">
+        
       <Header></Header>
+      <Monaco></Monaco>
         {children}
       </div>
       </Provider>

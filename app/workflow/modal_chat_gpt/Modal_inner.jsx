@@ -15,9 +15,14 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
 function ModalInner({ id, setopen, description }) {
+ 
   const reduxNodes = useSelector((state) => state.node.nodes);
-  const dispatch = useDispatch();
+  const original_Sql= useSelector((state)=>state.node.new_Sql);
+  const sql_query= useSelector((state)=>state.node.sql_query);
   const nodesArray = Object.values(reduxNodes);  // 객체를 배열로 변환
+   
+
+
 
   const [input, setInput] = useState("");
   const [pending, setPending] = useState(false);
@@ -46,7 +51,9 @@ function ModalInner({ id, setopen, description }) {
 
       const response = await fetch('/api/Flow', {
         method: 'POST',
-        body: JSON.stringify({ input_result: input_result.toUpperCase(), id: id, Node: nodesArray.slice(0, id) }),
+        body: JSON.stringify({ input_result: input_result.toUpperCase(), id: id, 
+          sql_query:sql_query,
+          Node:nodesArray ,sql: nodesArray[id-1].data.sql ,dummy:original_Sql }),
       });
 
       const reader = response.body?.getReader();
@@ -211,7 +218,12 @@ function ModalInner({ id, setopen, description }) {
             </div>
           ))}
         </div>
-
+        <button
+        onClick={(e)=> {
+          setInput('예시데이터를 알려줘')
+          handleSubmit(e)
+        }}
+        className='bg-blue-400  h-8 w-20 text-white'>예시데이터</button>
         <form className="w-full flex-grow-[1] flex items-center py-4" onSubmit={handleSubmit}>
           <Textarea
             value={input}

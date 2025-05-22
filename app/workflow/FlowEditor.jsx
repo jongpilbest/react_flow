@@ -20,12 +20,13 @@ import { treeRootId } from '../redux/Intial_node';
 import { layoutElements } from '../redux/layout-element';
 import CustomNode_ex from './parent_node/CustomNode_ex';
 import CustomEdge from  "./child_node/CustomEdge";
-
+import NewNode from './New_node/Node';
 const nodeTypes = {
   Node: Parents_node,
   Child: Child_nodes,
   Chat: ASked_node,
-  custom:CustomNode_ex
+  custom:CustomNode_ex,
+  NewNL : NewNode
 };
 
 const edgeTypes = {
@@ -34,11 +35,10 @@ const edgeTypes = {
 
 export default function FlowEditor() {
   const reduxNodes = useSelector((state) => state.node.nodes); // 실제 트리 형식의 node 데이터
-
+  const reduxEdges=  useSelector((state) => state.node.edges);
 
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-
 
 
   const onConnect = useCallback(
@@ -55,16 +55,16 @@ export default function FlowEditor() {
   // ✅ Redux 상태가 바뀔 때마다 position 포함한 nodes 재계산
   useEffect(() => {
     if (!reduxNodes || Object.keys(reduxNodes).length === 0) return;
-
-    const { nodes: layoutedNodes, edges: layoutedEdges } = layoutElements(
-      reduxNodes,
-      treeRootId,
-      'TB'
-    );
-    
- 
-    setNodes(layoutedNodes);
-    setEdges(layoutedEdges); // 필요하면 같이 업데이트
+//
+   // const { nodes: layoutedNodes, edges: layoutedEdges } = layoutElements(
+   //   reduxNodes,
+   //   treeRootId,
+   //   'TB'
+   // );
+  
+    setNodes(reduxNodes);
+    setEdges(reduxEdges);
+    //setEdges(layoutedEdges); // 필요하면 같이 업데이트
   }, [reduxNodes, setNodes, setEdges]);
 
   return (

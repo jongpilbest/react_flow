@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Flow_chat } from './action';
 import { useFormStatus } from 'react-dom';
 import { useSelector ,useDispatch} from 'react-redux';
-import { addChildNode,addFlowChildNode } from '@/app/redux/Node_Store';
+import { addChildNode,add_renew_Node } from '@/app/redux/Node_Store';
 
 export default function Time_to_sql() {
   const [input, setinput] = useState('');
@@ -18,10 +18,10 @@ export default function Time_to_sql() {
       formData.append('initial_Tree', JSON.stringify(reduxNodes));
       const response= await Flow_chat(formData)
       // 으로 받은것
-    // console.log(response,'응답')
+  
 
          //dispatch(addChildNode({data:JSON.parse(response)}))
-      dispatch(addFlowChildNode({data:JSON.parse(response), start:last_number_tree }))
+      dispatch(add_renew_Node({data:response, start:last_number_tree }))
 
 
   }
